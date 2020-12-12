@@ -1,0 +1,90 @@
+CREATE DATABASE Agenda;
+GO
+
+USE Agenda;
+GO
+
+CREATE TABLE Usuario(
+IdUsuario			INT PRIMARY KEY IDENTITY,
+Nome				VARCHAR(60) NOT NULL,
+Email				VARCHAR(60) NOT NULL,
+Senha				VARCHAR(20)NOT NULL,
+);
+GO
+
+CREATE TABLE Aniversario(
+IdAniversario		INT PRIMARY KEY IDENTITY,
+Nome				VARCHAR(100) NOT NULL,
+DataNascimento		DATE NOT NULL,
+IdUsuario			INT FOREIGN KEY REFERENCES Usuario(IdUsuario)
+);
+GO
+
+CREATE TABLE Evento(
+IdEvento			INT PRIMARY KEY IDENTITY,
+Nome				VARCHAR(100) NOT NULL,
+Descricao			VARCHAR(MAX),
+BackGroud			VARCHAR(10),
+Ativo				BIT NOT NULL,
+IdUsuario			INT FOREIGN KEY REFERENCES Usuario(IdUsuario)
+);
+GO
+
+CREATE TABLE Objetivo(
+IdObjetivo			INT PRIMARY KEY IDENTITY,
+Nome				VARCHAR(100) NOT NULL,
+Descricao			VARCHAR(MAX),
+DataInicio			DATE NOT NULL,
+DataFim				DATE NOT NULL,
+BackGroud			VARCHAR(10),
+Ativo				BIT NOT NULL,
+IdUsuario			INT FOREIGN KEY REFERENCES Usuario(IdUsuario)
+);
+GO
+
+CREATE TABLE Tarefa(
+IdTarefa			INT PRIMARY KEY IDENTITY,
+Nome				VARCHAR(100) NOT NULL,
+Descricao			VARCHAR(MAX),
+BackGroud			VARCHAR(10),
+Ativo				BIT NOT NULL,
+IdUsuario			INT FOREIGN KEY REFERENCES Usuario(IdUsuario)
+);
+GO
+
+CREATE TABLE Meta(
+IdMeta				INT PRIMARY KEY IDENTITY,
+Nome				VARCHAR(100) NOT NULL,
+Descricao			VARCHAR(MAX),
+DataInicio			DATE NOT NULL,
+DataFim				DATE NOT NULL,
+IdObjetivo			INT FOREIGN KEY REFERENCES Objetivo(IdObjetivo)
+);
+GO
+
+CREATE TABLE DiaSemana(
+IdDiaSemana			INT PRIMARY KEY IDENTITY,
+Nome				VARCHAR(15) NOT NULL
+);
+GO
+
+CREATE TABLE Horario(
+IdHorario			INT PRIMARY KEY IDENTITY,
+HoraInicio			TIME NOT NULL,
+HoraFim				TIME NOT NULL,
+IdDiaSemana			INT FOREIGN KEY REFERENCES DiaSemana(IdDiaSemana),
+IdObjetivo			INT FOREIGN KEY REFERENCES Objetivo(IdObjetivo),
+IdEvento			INT FOREIGN KEY REFERENCES Evento(IdEvento),
+IdTarefa			INT FOREIGN KEY REFERENCES Tarefa(IdTarefa)
+);
+GO
+
+CREATE TABLE DiaEspecifico(
+IdDiaEspecifico		INT PRIMARY KEY IDENTITY,
+Dia					DATE NOT NULL,
+Inicio				TIME NOT NULL,
+Fim					TIME NOT NULL,
+IdObjetivo			INT FOREIGN KEY REFERENCES Objetivo(IdObjetivo),
+IdEvento			INT FOREIGN KEY REFERENCES Evento(IdEvento),
+IdTarefa			INT FOREIGN KEY REFERENCES Tarefa(IdTarefa)
+);
